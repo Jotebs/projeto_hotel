@@ -1,5 +1,3 @@
-#adoro o Fernando <3
-
 #FUNÇÕES PARA OS ARQUIVOS
 def existe_arquivo(nome):
     import os

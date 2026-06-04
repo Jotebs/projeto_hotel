@@ -424,7 +424,7 @@ def opcao_invalida():
     print("Digite uma opção válida.")
     print("-------------------------")
     
-    
+    jjijijiji
 
 def menu():
     opcao = 0

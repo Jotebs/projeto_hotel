@@ -41,8 +41,10 @@ def gravar_dados_cliente(lista_cliente):
         arq.write(contato)
     arq.close()
 
-
+#--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES
+#--------------------------------------------------------
+
 def incluir_cliente(lista_clientes):
     cliente = []
 
@@ -252,8 +254,9 @@ def submenu_clientes(lista_clientes):
             opcao_invalida()
 
 
-
+#--------------------------------------------------------
 # DAQUI PRA BAIXO É TUDO RESERVA
+#--------------------------------------------------------
 
 def incluir_reserva(lista_reservas, lista_clientes):
     if len(lista_clientes) == 0:
@@ -381,12 +384,11 @@ def submenu_reservas(lista_reservas, lista_clientes):
         else:
             opcao_invalida()
 
-
-
-
+#--------------------------------------------------------
 # DAQUI PRA BAIXO É TUDO APARTAMENTOS
+#--------------------------------------------------------
 
-def submenu_apartamentos():
+def submenu_apartamentos(lista_apartamentos):
     opcao = 0
     while opcao != 6:
         print()
@@ -400,7 +402,97 @@ def submenu_apartamentos():
         opcao = int(input("Escolha uma opção: "))
         print()
 
+        if opcao == 1:
+            listar_todos_apartamentos(lista_apartamentos)
+        elif opcao == 2:
+            listar_um_apartamento(lista_apartamentos)
+        elif opcao == 3:
+            incluir_apartamento(lista_apartamentos)
+        elif opcao == 4:
+            alterar_apartamento(lista_apartamentos) #!!!
+        elif opcao == 5:
+            excluir_apartamento(lista_apartamentos) #!!!
+        elif opcao == 6:
+            print("Voltando...")
+        else:
+            opcao_invalida()
 
+def listar_todos_apartamentos(lista_apartamentos):
+    if len(lista_apartamentos) == 0:
+        print()
+        print("A lista de apartamentos está vazia.")
+        print()
+    else:
+        print("---------------LISTA DE APARTAMENTOS---------------")
+        for i in range(len(lista_apartamentos)):
+            print(f"Código do apartamento: {lista_apartamentos[i][0]}")
+            print(f"Descrição: {lista_apartamentos[i][1]}")
+            print(f"Número de adultos: {lista_apartamentos[i][2]}")
+            print(f"Número de crianças: {lista_apartamentos[i][3]}")
+            print(f"Valor: {lista_apartamentos[i][4]}")
+            print("----------------------------------------------")
+
+def listar_um_apartamento(lista_apartamentos):
+    achou = False
+    cod_buscar = input("Digite o código do apartamento que busca: ")
+    for i in range (len(lista_apartamentos)):
+        if cod_buscar == lista_apartamentos[i][0]:
+            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
+            print(f"Descrição: {lista_apartamentos[i][1]}")
+            print(f"Número de adultos: {lista_apartamentos[i][2]}")
+            print(f"Número de crianças: {lista_apartamentos[i][3]}")
+            print(f"Valor: {lista_apartamentos[i][4]}")
+            print("----------------------------------------------")
+            achou = True
+    if not achou:
+        print()
+        print("Apartamento não encontrado, tente novamente com um código existente!")
+
+def incluir_apartamento(lista_apartamentos):
+    apartamento = []
+
+     #Código do apartamento tem as limitações pois é atributo CHAVE
+    codigo_ap = input("Digite o código do apartamento (Ex: 001, 123, 999): ").replace(" ", "")
+    if not codigo_ap.isdigit() or len(codigo_ap) != 3:
+        print()
+        print("Digite o código corretamente")
+        return
+    else:
+        if len(lista_apartamentos) > 0:
+            for i in range (len(lista_apartamentos)):
+                if codigo_ap == lista_apartamentos[i][0]:
+                    print()
+                    print("Esse código de apartamento já está cadastrado, tente novamente com outro")
+                    return
+        apartamento.append(codigo_ap)
+    
+    descricao = input("Digite a descrição do apartamento: ")
+    apartamento.append(descricao)
+
+    num_adultos = int(input("Digite o número de adultos: "))
+    apartamento.append(num_adultos)
+
+    num_criancas = int(input("Digite o número de crianças: "))
+    apartamento.append(num_criancas)
+
+    valor = input("Digite o valor da diária do apartamento (Ex: 349,99 ; 500,00 ; 1000,50): ")
+    apartamento.append(valor)
+
+    lista_apartamentos.append(apartamento)
+    print()
+    print("Apartamento adicionado com sucesso.")
+    #ÍNDICES APARTAMENTO:
+    #0 - CÓDIGO; 1 - DESCRIÇÃO; 2 - NÚMERO DE ADULTOS; 3 - NÚMERO DE CRIANÇAS; 4 - VALOR.
+
+def alterar_apartamento(lista_apartamentos):
+    print()
+
+def excluir_apartamento(lista_apartamentos):
+    print()
+
+#--------------------------------------------------------
+#DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS
+#--------------------------------------------------------
 
 def submenu_reserva_apartamentos():
     opcao = 0
@@ -429,12 +521,13 @@ def opcao_invalida():
 def menu():
     opcao = 0
     clientes = []
+    apartamentos = []
+    reservas = []
     if existe_arquivo("Clientes.txt"):
         carregar_dados_arquivos_cliente(clientes)
     else:
         gravar_dados_cliente("Clientes.txt")
 
-    reservas = []
     while opcao != 6:
         print()
         print("----------MENU PRINCIPAL---------")
@@ -453,7 +546,7 @@ def menu():
             submenu_reservas(reservas, clientes)
 
         elif opcao == 3:
-            submenu_apartamentos()
+            submenu_apartamentos(apartamentos)
 
         elif opcao == 4:
             submenu_reserva_apartamentos()

@@ -346,7 +346,7 @@ def excluir_reserva(lista_reservas):
         if not achou:
             print("Não existe uma reserva com esse código cadastrada.")
         else:
-            imprimir_um_cliente(lista_reservas, index_busca)
+            imprimir_uma_reserva(lista_reservas, index_busca)
             print()
             confirmar = input("Deseja excluir essa reserva?(S/N): ")
             if confirmar == 'S' or confirmar == 's':
@@ -423,26 +423,20 @@ def listar_todos_apartamentos(lista_apartamentos):
         print("A lista de apartamentos está vazia.")
         print()
     else:
-        print("---------------LISTA DE APARTAMENTOS---------------")
+        print("LISTA DE APARTAMENTOS:")
         for i in range(len(lista_apartamentos)):
-            print(f"Código do apartamento: {lista_apartamentos[i][0]}")
-            print(f"Descrição: {lista_apartamentos[i][1]}")
-            print(f"Número de adultos: {lista_apartamentos[i][2]}")
-            print(f"Número de crianças: {lista_apartamentos[i][3]}")
-            print(f"Valor: {lista_apartamentos[i][4]}")
-            print("----------------------------------------------")
+            imprimir_apartamento(lista_apartamentos, i)
 
 def listar_um_apartamento(lista_apartamentos):
+    if len(lista_apartamentos) == 0:
+        print()
+        print("A lista de apartamentos está vazia.")
+        print()
     achou = False
     cod_buscar = input("Digite o código do apartamento que busca: ")
     for i in range (len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
-            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
-            print(f"Descrição: {lista_apartamentos[i][1]}")
-            print(f"Número de adultos: {lista_apartamentos[i][2]}")
-            print(f"Número de crianças: {lista_apartamentos[i][3]}")
-            print(f"Valor: {lista_apartamentos[i][4]}")
-            print("----------------------------------------------")
+            imprimir_apartamento(lista_apartamentos, i)
             achou = True
     if not achou:
         print()
@@ -454,8 +448,7 @@ def incluir_apartamento(lista_apartamentos):
      #Código do apartamento tem as limitações pois é atributo CHAVE
     codigo_ap = input("Digite o código do apartamento (Ex: 001, 123, 999): ").replace(" ", "")
     if not codigo_ap.isdigit() or len(codigo_ap) != 3:
-        print()
-        print("Digite o código corretamente")
+        opcao_invalida()
         return
     else:
         if len(lista_apartamentos) > 0:
@@ -486,19 +479,50 @@ def incluir_apartamento(lista_apartamentos):
 
 def alterar_apartamento(lista_apartamentos):
     print()
-    cod_buscar = input("Digite o código do apartamento que deseja excluir: ")
+    if len(lista_apartamentos) == 0:
+        print()
+        print("A lista de apartamentos está vazia.")
+        print()
+    cod_buscar = input("Digite o código do apartamento que deseja alterar atributos: ")
     achou = False
+    n = 0
     for i in range(len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
             achou = True
-            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
-            print(f"1 - Descrição: {lista_apartamentos[i][1]}")
-            print(f"2 - Número de adultos: {lista_apartamentos[i][2]}")
-            print(f"3 - Número de crianças: {lista_apartamentos[i][3]}")
-            print(f"4 - Valor: {lista_apartamentos[i][4]}")
-            print("----------------------------------------------")
-            print()
-            print("Digite o atributo que deseja alterar: ")
+            imprimir_apartamento(lista_apartamentos, i)
+            while n != 5:
+                print()
+                print("-----ALTERAR DADOS DO APARTAMENTO-----")
+                print("1. Alterar descrição")
+                print("2. Alterar número de adultos")
+                print("3. Alterar número de crianças")
+                print("4. Alterar valor")
+                print("5. Voltar")
+                n = int(input("Escolha uma opção: "))
+
+                if n == 1:
+                    lista_apartamentos[i][1] = input("Altere a descrição do apartamento: ")
+                    print("Atributo alterado com sucesso.")
+                
+                elif n == 2:
+                    lista_apartamentos[i][2] = input("Altere o número de adultos do apartamento: ")
+                    print("Atributo alterado com sucesso.")
+
+                elif n == 3:
+                    lista_apartamentos[i][3] = input("Altere o número de crianças do apartamento: ")
+                    print("Atributo alterado com sucesso.")
+
+                elif n == 4:
+                    lista_apartamentos[i][4] = input("Altere o valor do apartamento: ")
+                    print("Atributo alterado com sucesso.")
+
+                elif n == 5:
+                    print("Voltando...")
+
+                else:
+                    opcao_invalida()
+    if not achou:
+        print("Apartamento não encontrado.")
     
 
 def excluir_apartamento(lista_apartamentos):
@@ -507,13 +531,7 @@ def excluir_apartamento(lista_apartamentos):
     for i in range(len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
             achou = True
-            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
-            print(f"Descrição: {lista_apartamentos[i][1]}")
-            print(f"Número de adultos: {lista_apartamentos[i][2]}")
-            print(f"Número de crianças: {lista_apartamentos[i][3]}")
-            print(f"Valor: {lista_apartamentos[i][4]}")
-            print("----------------------------------------------")
-            print()
+            imprimir_apartamento(lista_apartamentos, i)
             while achou == True:
                 confirm = input("Deseja excluir este apartamento? (S/N): ")
                 if confirm.upper() == "S":
@@ -524,9 +542,19 @@ def excluir_apartamento(lista_apartamentos):
                     print("Voltando...")
                     return
                 else:
-                    print("Digite um valor válido")
+                    opcao_invalida()
     if not achou:
         print("Apartamento não encontrado.")
+
+
+def imprimir_apartamento(lista_apartamentos, i):
+    print(f"---------------APARTAMENTO #{lista_apartamentos[i][0]}---------------")
+    print(f"Descrição: {lista_apartamentos[i][1]}")
+    print(f"Número de adultos: {lista_apartamentos[i][2]}")
+    print(f"Número de crianças: {lista_apartamentos[i][3]}")
+    print(f"Valor: {lista_apartamentos[i][4]}")
+    print("----------------------------------------------")
+    
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS

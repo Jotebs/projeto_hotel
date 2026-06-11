@@ -486,9 +486,47 @@ def incluir_apartamento(lista_apartamentos):
 
 def alterar_apartamento(lista_apartamentos):
     print()
+    cod_buscar = input("Digite o código do apartamento que deseja excluir: ")
+    achou = False
+    for i in range(len(lista_apartamentos)):
+        if cod_buscar == lista_apartamentos[i][0]:
+            achou = True
+            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
+            print(f"1 - Descrição: {lista_apartamentos[i][1]}")
+            print(f"2 - Número de adultos: {lista_apartamentos[i][2]}")
+            print(f"3 - Número de crianças: {lista_apartamentos[i][3]}")
+            print(f"4 - Valor: {lista_apartamentos[i][4]}")
+            print("----------------------------------------------")
+            print()
+            print("Digite o atributo que deseja alterar: ")
+    
 
 def excluir_apartamento(lista_apartamentos):
-    print()
+    cod_buscar = input("Digite o código do apartamento que deseja excluir: ")
+    achou = False
+    for i in range(len(lista_apartamentos)):
+        if cod_buscar == lista_apartamentos[i][0]:
+            achou = True
+            print(f"---------------APARTAMENTO #{cod_buscar}---------------")
+            print(f"Descrição: {lista_apartamentos[i][1]}")
+            print(f"Número de adultos: {lista_apartamentos[i][2]}")
+            print(f"Número de crianças: {lista_apartamentos[i][3]}")
+            print(f"Valor: {lista_apartamentos[i][4]}")
+            print("----------------------------------------------")
+            print()
+            while achou == True:
+                confirm = input("Deseja excluir este apartamento? (S/N): ")
+                if confirm.upper() == "S":
+                    del lista_apartamentos[i]
+                    print("Apartamento excluído com sucesso.")
+                    return
+                elif confirm.upper() == "N":
+                    print("Voltando...")
+                    return
+                else:
+                    print("Digite um valor válido")
+    if not achou:
+        print("Apartamento não encontrado.")
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS

@@ -555,6 +555,9 @@ def imprimir_apartamento(lista_apartamentos, i):
     print(f"Valor: {lista_apartamentos[i][4]}")
     print("----------------------------------------------")
     
+#ARQUIVOS APARTAMENTOS
+
+
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS
@@ -613,6 +616,7 @@ def menu():
 
         elif opcao == 3:
             submenu_apartamentos(apartamentos)
+            #carregar_dados_arquivos(apartamentos, "Apartamentos.txt")
 
         elif opcao == 4:
             submenu_reserva_apartamentos()
@@ -638,3 +642,15 @@ def main():
 
 
 main()
+
+'''
+TENTANDO GENERALIZAR A FUNÇÃO DE CARREGAR ARQUIVO, AINDA NÃO ESTÁ FUNCIONANDO!!!!
+def carregar_dados_arquivos(lista, arq):
+    if existe_arquivo(arq):
+        arquivo = open(arq, 'r', encoding="utf-8")
+        for linha in arquivo:
+            linha = linha[:(len(linha)-1)]
+            linha = linha.split(";")
+            lista.append(linha)
+        arq.close()
+'''

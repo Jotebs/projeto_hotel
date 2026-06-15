@@ -41,6 +41,25 @@ def gravar_dados_cliente(lista_cliente):
         arq.write(contato)
     arq.close()
 
+def listar_dados_arquivos(lista, arq):
+    if existe_arquivo(arq):
+        arquivo = open(arq, 'r', encoding="utf-8")
+        for linha in arquivo:
+            linha = linha[:(len(linha)-2)]
+            linha = linha.split(";")
+            lista.append(linha)
+        arquivo.close()
+
+def atualizar_dados_arquivos(lista, arq):
+    if existe_arquivo(arq):
+        arquivo = open(arq, "w")
+        for item in lista:
+            for atributo in item:
+                arquivo.write(atributo)
+                arquivo.write(";")
+            arquivo.write("\n")
+        arquivo.close
+
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES
 #--------------------------------------------------------
@@ -389,6 +408,7 @@ def submenu_reservas(lista_reservas, lista_clientes):
 #--------------------------------------------------------
 
 def submenu_apartamentos(lista_apartamentos):
+    listar_dados_arquivos(lista_apartamentos, "Apartamentos.txt")
     opcao = 0
     while opcao != 6:
         print()
@@ -409,10 +429,11 @@ def submenu_apartamentos(lista_apartamentos):
         elif opcao == 3:
             incluir_apartamento(lista_apartamentos)
         elif opcao == 4:
-            alterar_apartamento(lista_apartamentos) #!!!
+            alterar_apartamento(lista_apartamentos)
         elif opcao == 5:
-            excluir_apartamento(lista_apartamentos) #!!!
+            excluir_apartamento(lista_apartamentos)
         elif opcao == 6:
+            atualizar_dados_arquivos(lista_apartamentos, "Apartamentos.txt")
             print("Voltando...")
         else:
             opcao_invalida()
@@ -462,10 +483,10 @@ def incluir_apartamento(lista_apartamentos):
     descricao = input("Digite a descrição do apartamento: ")
     apartamento.append(descricao)
 
-    num_adultos = int(input("Digite o número de adultos: "))
+    num_adultos = input("Digite o número de adultos: ")
     apartamento.append(num_adultos)
 
-    num_criancas = int(input("Digite o número de crianças: "))
+    num_criancas = input("Digite o número de crianças: ")
     apartamento.append(num_criancas)
 
     valor = input("Digite o valor da diária do apartamento (Ex: 349,99 ; 500,00 ; 1000,50): ")
@@ -554,10 +575,6 @@ def imprimir_apartamento(lista_apartamentos, i):
     print(f"Número de crianças: {lista_apartamentos[i][3]}")
     print(f"Valor: {lista_apartamentos[i][4]}")
     print("----------------------------------------------")
-    
-#ARQUIVOS APARTAMENTOS
-
-
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS
@@ -642,15 +659,3 @@ def main():
 
 
 main()
-
-'''
-TENTANDO GENERALIZAR A FUNÇÃO DE CARREGAR ARQUIVO, AINDA NÃO ESTÁ FUNCIONANDO!!!!
-def carregar_dados_arquivos(lista, arq):
-    if existe_arquivo(arq):
-        arquivo = open(arq, 'r', encoding="utf-8")
-        for linha in arquivo:
-            linha = linha[:(len(linha)-1)]
-            linha = linha.split(";")
-            lista.append(linha)
-        arq.close()
-'''

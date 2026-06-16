@@ -7,7 +7,7 @@ def existe_arquivo(nome):
         return False
     
 
-def carregar_dados_arquivos_cliente(lista_cliente):
+'''def carregar_dados_arquivos_cliente(lista_cliente):
     if existe_arquivo("Clientes.txt"):
         arq = open("Clientes.txt", 'r', encoding="utf-8")
         for linha in arq:
@@ -39,7 +39,7 @@ def gravar_dados_cliente(lista_cliente):
         # nome;cpf;endereço;data_nascimento;telefones_\n
         contato += lista_cliente[i][0] + ';' +  lista_cliente[i][1] + ';' + lista_cliente[i][2] + ';' +  lista_cliente[i][3] + ';' +  f"{lista_cliente[i][4]}" + ';' + f"{lista_cliente[i][5]}" + '\n'                 
         arq.write(contato)
-    arq.close()
+    arq.close()'''
 
 def listar_dados_arquivos(lista, arq):
     if existe_arquivo(arq):
@@ -96,8 +96,8 @@ def incluir_cliente(lista_clientes):
     nascimento = input("Digite a data de nascimento do cliente(xx/xx/xxxx): ")
     cliente.append(nascimento)
 
-    tel_fixo = int(input("Digite o telefone fixo do ciente: "))
-    celular = int(input("Digite o telefone celular do ciente: "))
+    tel_fixo = input("Digite o telefone fixo do ciente: ")
+    celular = input("Digite o telefone celular do ciente: ")
     cliente.append(tel_fixo)
     cliente.append(celular)
 
@@ -207,7 +207,6 @@ def alterar_cliente(lista_clientes):
                     print()
                     print("Alteração realizada com sucesso.")
                 elif escolha == 6:
-                    gravar_dados_cliente(lista_clientes)
                     print("Voltando e gravando dados no arquivo...")
                 else:
                     opcao_invalida()
@@ -267,7 +266,7 @@ def submenu_clientes(lista_clientes):
         elif opcao == 5:
             excluir_cliente(lista_clientes)
         elif opcao == 6:
-            gravar_dados_cliente(lista_clientes)
+            atualizar_dados_arquivos(lista_clientes, "Clientes.txt")
             print("Voltando e gravando dados no arquivo...")
         else:
             opcao_invalida()
@@ -283,7 +282,10 @@ def incluir_reserva(lista_reservas, lista_clientes):
     else:
         reserva = []
         #Código da reserva tem as limitações pois é atributo CHAVE
-        código_reserva = input("Digite o código da reserva: ").replace(" ", "")
+        código_reserva = input("Digite o código da reserva (EX: 1, 500, 1000): ").replace(" ", "")
+        if not código_reserva.isdigit():
+            opcao_invalida()
+            return
         for i in range(len(lista_reservas)):
             if código_reserva == lista_reservas[i][0]:
                 print()
@@ -375,6 +377,31 @@ def excluir_reserva(lista_reservas):
             else:
                 print("Voltando...")
 
+def alterar_reserva(lista_reservas, lista_clientes):
+    busca = input("Digite o código da reserva para a busca: ").replace(" ", "")
+    achou = False
+    for i in range(len(lista_reservas)):
+        if busca == lista_reservas[i][0]:
+            achou = True
+            index_busca = i
+    if not achou:
+        print("Não existe uma reserva com esse código cadastrada.")
+    else:
+        imprimir_uma_reserva(lista_reservas, index_busca)
+        confirmar = input("Deseja alterar o CPF desta reserva?(S/N): ").upper()
+        if confirmar == "S":
+            achou = False
+            novocpf = input("Digite o novo CPF:")
+            for j in range(len(lista_clientes)):
+                if novocpf == lista_clientes[j][1]:
+                    achou = True
+                    lista_reservas[i][1] = novocpf
+            print("CPF alterado com sucesso!")
+            if not achou:
+                print("Não existe um cliente com este CPF.")
+                return
+        else:
+            print("Voltando...")
 
 
 def submenu_reservas(lista_reservas, lista_clientes):
@@ -386,7 +413,8 @@ def submenu_reservas(lista_reservas, lista_clientes):
         print("2. Listar uma reserva")
         print("3. Incluir reserva")
         print("4. Excluir reserva")
-        print("5. Voltar")
+        print("5. Alterar reserva")
+        print("6. Voltar")
         opcao = int(input("Escolha uma opção: "))
         print()
 
@@ -399,7 +427,10 @@ def submenu_reservas(lista_reservas, lista_clientes):
         elif opcao == 4:
             excluir_reserva(lista_reservas)
         elif opcao == 5:
-             print("Voltando...")
+            alterar_reserva(lista_reservas, lista_clientes)
+        elif opcao == 6:
+            atualizar_dados_arquivos(lista_reservas, "Reservas.txt")
+            print("Voltando...")
         else:
             opcao_invalida()
 
@@ -408,7 +439,6 @@ def submenu_reservas(lista_reservas, lista_clientes):
 #--------------------------------------------------------
 
 def submenu_apartamentos(lista_apartamentos):
-    listar_dados_arquivos(lista_apartamentos, "Apartamentos.txt")
     opcao = 0
     while opcao != 6:
         print()
@@ -574,13 +604,12 @@ def imprimir_apartamento(lista_apartamentos, i):
     print(f"Número de adultos: {lista_apartamentos[i][2]}")
     print(f"Número de crianças: {lista_apartamentos[i][3]}")
     print(f"Valor: {lista_apartamentos[i][4]}")
-    print("----------------------------------------------")
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS
 #--------------------------------------------------------
 
-def submenu_reserva_apartamentos():
+def submenu_reserva_apartamentos(lista_reservas, lista_apartamentos):
     opcao = 0
     while opcao != 6:
         print()
@@ -588,13 +617,40 @@ def submenu_reserva_apartamentos():
         print("1. Listar Todos as reservas de apartamentos")
         print("2. Listar uma reserva de apartamento")
         print("3. Incluir reserva de apartamento")
-        print("4. Alterar reserva de apartamento")
-        print("5. Excluir reserva de apartamento")
-        print("6. Voltar")
+        print("4. Excluir reserva de apartamento")
+        print("5. Voltar")
         opcao = int(input("Escolha uma opção: "))
         print()
 
+        if opcao == 1:
+            listar_todas_reservas_apartamentos(lista_reservas, lista_apartamentos)
+        elif opcao == 2:
+            listar_uma_reserva_apartamento(lista_reservas, lista_apartamentos)
+        elif opcao == 3:
+            incluir_reserva_apartamento(lista_reservas, lista_apartamentos)
+        elif opcao == 4:
+            excluir_reserva_apartamento(lista_reservas, lista_apartamentos)
+        elif opcao == 5:
+            atualizar_dados_arquivos(lista_apartamentos, "Reservas_Apartamentos.txt")
+            print("Voltando...")
+        else:
+            opcao_invalida()
 
+def listar_todas_reservas_apartamentos(lista_reservas, lista_apartamentos):
+    print()
+
+def listar_uma_reserva_apartamento(lista_reservas, lista_apartamentos):
+    print()
+
+def incluir_reserva_apartamento(lista_reservas, lista_apartamentos):
+    print()
+
+def excluir_reserva_apartamento(lista_reservas, lista_apartamentos):
+    print()
+
+#----------------------------------------------------------------------------
+#DAQUI PRA BAIXO SÃO FUNÇÕES GERAIS
+#----------------------------------------------------------------------------
 
 def opcao_invalida():
     print()
@@ -609,10 +665,9 @@ def menu():
     clientes = []
     apartamentos = []
     reservas = []
-    if existe_arquivo("Clientes.txt"):
-        carregar_dados_arquivos_cliente(clientes)
-    else:
-        gravar_dados_cliente("Clientes.txt")
+    listar_dados_arquivos(apartamentos, "Apartamentos.txt")
+    listar_dados_arquivos(reservas, "Reservas.txt")
+    listar_dados_arquivos(clientes, "Clientes.txt")
 
     while opcao != 6:
         print()
@@ -633,10 +688,9 @@ def menu():
 
         elif opcao == 3:
             submenu_apartamentos(apartamentos)
-            #carregar_dados_arquivos(apartamentos, "Apartamentos.txt")
 
         elif opcao == 4:
-            submenu_reserva_apartamentos()
+            submenu_reserva_apartamentos(reservas, apartamentos)
 
         elif opcao == 5:
             print("opçao 5")

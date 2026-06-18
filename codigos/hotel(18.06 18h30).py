@@ -8,7 +8,7 @@ def existe_arquivo(nome):
 
 def listar_dados_arquivos(lista, arq):
     if existe_arquivo(arq):
-        arquivo = open(arq, 'r', encoding="utf-8")
+        arquivo = open(arq, 'r', encoding="utf-8", errors='ignore')
         for linha in arquivo:
             linha = linha[:(len(linha)-2)]
             linha = linha.split(";")
@@ -16,26 +16,22 @@ def listar_dados_arquivos(lista, arq):
         arquivo.close()
 
 def atualizar_dados_arquivos(lista, arq):
-    if existe_arquivo(arq):
-        arquivo = open(arq, "w")
-        for item in lista:
-            for atributo in item:
-                arquivo.write(atributo)
-                arquivo.write(";")
-            arquivo.write("\n")
-        arquivo.close
+    arquivo = open(arq, "w", encoding="utf-8")
+    for item in lista:
+        for atributo in item:
+            arquivo.write(atributo)
+            arquivo.write(";")
+        arquivo.write("\n")
+    arquivo.close
 
-def atualizar_arquivos_relatorios(lista, arq):
-    if existe_arquivo(arq):
-        arquivo = open(arq, "w")
-        for cliente in lista:
-            arq.write(f"---Cliente: {lista[cliente][1]}")
-            arq.write(f"RESERVAS")
-            arq.write(f"Código da Reserva: ")
-
-            
-            arquivo.write("\n")
-        arquivo.close
+def atualizar_arquivos_relatorios(lista, arquivo):
+    arq = open(arquivo, "w", encoding="utf-8")
+    arq.write(f"---Cliente: {lista[0][1]}----\n")
+    arq.write(f"RESERVAS\n")
+    for i in range(len(lista)):
+        arq.write(f"Código da Reserva: {lista[i][0]}")
+        arq.write("\n")
+    arq.close
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES
@@ -659,14 +655,16 @@ def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lis
         reserva_apartamento.append(cod_apto)
 
     data_entrada = inserir_data("entrada")
-    reserva_apartamento.append(data_entrada)
+    if data_entrada != 0:
+        reserva_apartamento.append(data_entrada)
 
-    print()
+        print()
 
-    data_saida = inserir_data("saída")
-    reserva_apartamento.append(data_saida)
+        data_saida = inserir_data("saída")
+        if data_saida != 0:
+            reserva_apartamento.append(data_saida)
 
-    lista_reservas_apartamentos.append(reserva_apartamento)
+            lista_reservas_apartamentos.append(reserva_apartamento)
     
 
 def excluir_reserva_apartamento():
@@ -676,8 +674,17 @@ def excluir_reserva_apartamento():
 def inserir_data(ent_sai):
     data = ""
     ano = input(f"Insira o ano da {ent_sai}: ")
+    if len(ano) < 4 or len(ano) > 4:
+        print("\n Insira um ano com 4 dígitos.")
+        return 0
     mes = input(f"Insira o mês da {ent_sai}: ")
+    if len(mes) < 2 or len(mes) > 2:
+        print("\n Insira um mês com 2 dígitos.")
+        return 0
     dia = input(f"Insira o dia da {ent_sai}: ")
+    if len(dia) < 2 or len(dia) > 2:
+        print("\n Insira um dia com 2 dígitos.")
+        return 0
     data += dia + "/" + mes + "/" + ano
     return data
 
@@ -700,11 +707,11 @@ def submenu_relatorios(lista_reservas):
         if opcao == 1:
             listar_todas_reservas_apartamentos()
         elif opcao == 2:
-            print(lista_rel_cliente(lista_reservas))
+            atualizar_arquivos_relatorios(lista_rel_cliente(lista_reservas), "Relatorio_Cliente.txt")
+            print("Relatório gerado com sucesso.\n")
         elif opcao == 3:
             incluir_reserva_apartamento()
         elif opcao == 4:
-            atualizar_dados_arquivos()
             print("Voltando...")
         else:
             opcao_invalida()

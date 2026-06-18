@@ -1,4 +1,4 @@
 000;1 cama de casal, 2 de solteiro;2;2;500,00;
 001;2 camas de solteiro;2;0;300,00;
 002;2 camas de solteiro;1;1;350,00;
-003;1 cama de solteiro;1;0;150,00;
+003;1 cama de casal;1;0;175,00;

@@ -586,9 +586,9 @@ def imprimir_apartamento(lista_apartamentos, i):
 #DAQUI PRA BAIXO É TUDO RESERVA DE APARTAMENTOS
 #--------------------------------------------------------
 
-def submenu_reserva_apartamentos(lista_reservas, lista_apartamentos):
+def submenu_reserva_apartamentos(lista_reservas_apartamentos, lista_reservas, lista_apartamentos):
     opcao = 0
-    while opcao != 6:
+    while opcao != 5:
         print()
         print("----------RESERVAS DE APARTAMENTOS----------")
         print("1. Listar Todos as reservas de apartamentos")
@@ -600,30 +600,87 @@ def submenu_reserva_apartamentos(lista_reservas, lista_apartamentos):
         print()
 
         if opcao == 1:
-            listar_todas_reservas_apartamentos(lista_reservas, lista_apartamentos)
+            listar_todas_reservas_apartamentos()
         elif opcao == 2:
-            listar_uma_reserva_apartamento(lista_reservas, lista_apartamentos)
+            listar_uma_reserva_apartamento()
         elif opcao == 3:
-            incluir_reserva_apartamento(lista_reservas, lista_apartamentos)
+            incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lista_apartamentos)
         elif opcao == 4:
-            excluir_reserva_apartamento(lista_reservas, lista_apartamentos)
+            excluir_reserva_apartamento()
         elif opcao == 5:
-            atualizar_dados_arquivos(lista_apartamentos, "Reservas_Apartamentos.txt")
+            atualizar_dados_arquivos(lista_reservas_apartamentos, "ReservaApartamentos.txt")
             print("Voltando...")
         else:
             opcao_invalida()
 
-def listar_todas_reservas_apartamentos(lista_reservas, lista_apartamentos):
+def listar_todas_reservas_apartamentos():
     print()
 
-def listar_uma_reserva_apartamento(lista_reservas, lista_apartamentos):
+def listar_uma_reserva_apartamento():
     print()
 
-def incluir_reserva_apartamento(lista_reservas, lista_apartamentos):
+def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lista_apartamentos):
+    reserva_apartamento = []
+
+    #Código da Reserva deve estar cadastrado pois é atributo chave
+    cod_res = input("Digite o código da reserva: ")
+    achou = False
+    for i in range(len(lista_reservas)):
+        if cod_res == lista_reservas[i][0]:
+            achou = True
+    if not achou:
+        opcao_invalida()
+        return
+    else:
+        if len(lista_reservas_apartamentos) > 0:
+            for i in range (len(lista_reservas_apartamentos)):
+                if cod_res == lista_reservas_apartamentos[i][0]:
+                    print()
+                    print("Esse código já está cadastrado em uma reserva de apartamento, tente novamente com outro")
+                    return
+        reserva_apartamento.append(cod_res)
+    
+    #Código de Apartamento deve estar cadastrado pois é atributo chave
+    cod_apto = input("Digite o código do apartamento: ")
+    achou = False
+    for i in range(len(lista_apartamentos)):
+        if cod_apto == lista_apartamentos[i][0]:
+            achou = True
+    if not achou:
+        opcao_invalida()
+        return
+    else:
+        if len(lista_reservas_apartamentos) > 0:
+            for i in range (len(lista_reservas_apartamentos)):
+                if cod_apto == lista_reservas_apartamentos[i][1]:
+                    print()
+                    print("Esse código já está cadastrado em uma reserva de apartamento, tente novamente com outro")
+                    return
+        reserva_apartamento.append(cod_apto)
+
+    data_entrada = inserir_data("entrada")
+    reserva_apartamento.append(data_entrada)
+
     print()
 
-def excluir_reserva_apartamento(lista_reservas, lista_apartamentos):
+    data_saida = inserir_data("saída")
+    reserva_apartamento.append(data_saida)
+
+    lista_reservas_apartamentos.append(reserva_apartamento)
+    
+
+def excluir_reserva_apartamento():
     print()
+
+
+def inserir_data(ent_sai):
+    data = ""
+    ano = input(f"Insira o ano da {ent_sai}: ")
+    mes = input(f"Insira o mês da {ent_sai}: ")
+    dia = input(f"Insira o dia da {ent_sai}: ")
+    data += dia + "/" + mes + "/" + ano
+    return data
+
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RELATÓRIOS
@@ -643,7 +700,7 @@ def submenu_relatorios(lista_reservas):
         if opcao == 1:
             listar_todas_reservas_apartamentos()
         elif opcao == 2:
-            print(lista_rel_clienterel_cliente(lista_reservas))
+            print(lista_rel_cliente(lista_reservas))
         elif opcao == 3:
             incluir_reserva_apartamento()
         elif opcao == 4:
@@ -696,9 +753,11 @@ def menu():
     clientes = []
     apartamentos = []
     reservas = []
+    reservas_apartamentos = []
     listar_dados_arquivos(apartamentos, "Apartamentos.txt")
     listar_dados_arquivos(reservas, "Reservas.txt")
     listar_dados_arquivos(clientes, "Clientes.txt")
+    listar_dados_arquivos(reservas_apartamentos, "ReservaApartamentos.txt")
 
     while opcao != 6:
         print()
@@ -721,7 +780,7 @@ def menu():
             submenu_apartamentos(apartamentos)
 
         elif opcao == 4:
-            submenu_reserva_apartamentos(reservas, apartamentos)
+            submenu_reserva_apartamentos(reservas_apartamentos, reservas, apartamentos)
 
         elif opcao == 5:
             submenu_relatorios(reservas)

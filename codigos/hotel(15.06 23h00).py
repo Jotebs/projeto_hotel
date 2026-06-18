@@ -5,41 +5,6 @@ def existe_arquivo(nome):
         return True
     else:
         return False
-    
-
-'''def carregar_dados_arquivos_cliente(lista_cliente):
-    if existe_arquivo("Clientes.txt"):
-        arq = open("Clientes.txt", 'r', encoding="utf-8")
-        for linha in arq:
-            #CLIENTE - nome, cpf, endereço, telefones fixo e celular
-            cliente = []
-            linha = linha.strip().split(';')
-            
-            #insere o nome
-            cliente.append(linha[0])
-            #insere cpf
-            cliente.append(linha[1])
-            #insere o endereço
-            cliente.append(linha[2])
-            #insere a data de nascimento
-            cliente.append(linha[3])
-            #insere o telefone fixo
-            cliente.append(linha[4])
-            #insere o telefone celular
-            cliente.append(linha[5])
-            
-            lista_cliente.append(cliente)
-        arq.close()
-            
-
-def gravar_dados_cliente(lista_cliente):
-    arq = open("Clientes.txt", 'w', encoding="utf-8")
-    for i in range(len(lista_cliente)):
-        contato = ''
-        # nome;cpf;endereço;data_nascimento;telefones_\n
-        contato += lista_cliente[i][0] + ';' +  lista_cliente[i][1] + ';' + lista_cliente[i][2] + ';' +  lista_cliente[i][3] + ';' +  f"{lista_cliente[i][4]}" + ';' + f"{lista_cliente[i][5]}" + '\n'                 
-        arq.write(contato)
-    arq.close()'''
 
 def listar_dados_arquivos(lista, arq):
     if existe_arquivo(arq):

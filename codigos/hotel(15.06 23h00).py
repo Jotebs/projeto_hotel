@@ -25,6 +25,18 @@ def atualizar_dados_arquivos(lista, arq):
             arquivo.write("\n")
         arquivo.close
 
+def atualizar_arquivos_relatorios(lista, arq):
+    if existe_arquivo(arq):
+        arquivo = open(arq, "w")
+        for cliente in lista:
+            arq.write(f"---Cliente: {lista[cliente][1]}")
+            arq.write(f"RESERVAS")
+            arq.write(f"Código da Reserva: ")
+
+            
+            arquivo.write("\n")
+        arquivo.close
+
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES
 #--------------------------------------------------------
@@ -613,6 +625,60 @@ def incluir_reserva_apartamento(lista_reservas, lista_apartamentos):
 def excluir_reserva_apartamento(lista_reservas, lista_apartamentos):
     print()
 
+#--------------------------------------------------------
+#DAQUI PRA BAIXO É TUDO RELATÓRIOS
+#--------------------------------------------------------
+def submenu_relatorios(lista_reservas):
+    opcao = 0
+    while opcao != 4:
+        print()
+        print("----------RELATÓRIOS----------")
+        print("1. Todas as reservas de determinado apartamento")
+        print("2. Todas as reservas de determinado cliente")
+        print("3. CPF e nome dos clientes que fizeram reservas para determinado período")
+        print("4. Voltar")
+        opcao = int(input("Escolha uma opção: "))
+        print()
+
+        if opcao == 1:
+            listar_todas_reservas_apartamentos()
+        elif opcao == 2:
+            print(lista_rel_clienterel_cliente(lista_reservas))
+        elif opcao == 3:
+            incluir_reserva_apartamento()
+        elif opcao == 4:
+            atualizar_dados_arquivos()
+            print("Voltando...")
+        else:
+            opcao_invalida()
+
+def rel_apartamento():
+    if 0 == 1:
+        return 1
+    
+
+def lista_rel_cliente(lista_reservas):
+    cpf = input("Digite o CPF do cliente para busca: ").replace(".", "").replace("-", "")
+    lista_rel_cliente = []
+    for i in range(len(lista_reservas)):
+        if lista_reservas[i][1] == cpf:
+            lista_rel_cliente.append(lista_reservas[i])
+    if len(lista_rel_cliente) == 0:
+        return 0
+    else:
+        return lista_rel_cliente
+    
+
+
+
+def rel_cliente_periodo():
+    if 0 == 1:
+        return 1
+
+
+
+
+
 #----------------------------------------------------------------------------
 #DAQUI PRA BAIXO SÃO FUNÇÕES GERAIS
 #----------------------------------------------------------------------------
@@ -658,7 +724,7 @@ def menu():
             submenu_reserva_apartamentos(reservas, apartamentos)
 
         elif opcao == 5:
-            print("opçao 5")
+            submenu_relatorios(reservas)
 
         elif opcao == 6:
             print("Saindo...")

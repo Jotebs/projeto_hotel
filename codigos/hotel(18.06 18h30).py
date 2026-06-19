@@ -449,7 +449,7 @@ def listar_todos_apartamentos(lista_apartamentos):
     else:
         print("LISTA DE APARTAMENTOS:")
         for i in range(len(lista_apartamentos)):
-            imprimir_apartamento(lista_apartamentos, i)
+            imprimir_um_apartamento(lista_apartamentos, i)
 
 def listar_um_apartamento(lista_apartamentos):
     if len(lista_apartamentos) == 0:
@@ -460,7 +460,7 @@ def listar_um_apartamento(lista_apartamentos):
     cod_buscar = input("Digite o código do apartamento que busca: ")
     for i in range (len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
-            imprimir_apartamento(lista_apartamentos, i)
+            imprimir_um_apartamento(lista_apartamentos, i)
             achou = True
     if not achou:
         print()
@@ -513,7 +513,7 @@ def alterar_apartamento(lista_apartamentos):
     for i in range(len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
             achou = True
-            imprimir_apartamento(lista_apartamentos, i)
+            imprimir_um_apartamento(lista_apartamentos, i)
             while n != 5:
                 print()
                 print("-----ALTERAR DADOS DO APARTAMENTO-----")
@@ -555,7 +555,7 @@ def excluir_apartamento(lista_apartamentos):
     for i in range(len(lista_apartamentos)):
         if cod_buscar == lista_apartamentos[i][0]:
             achou = True
-            imprimir_apartamento(lista_apartamentos, i)
+            imprimir_um_apartamento(lista_apartamentos, i)
             while achou == True:
                 confirm = input("Deseja excluir este apartamento? (S/N): ")
                 if confirm.upper() == "S":
@@ -571,7 +571,7 @@ def excluir_apartamento(lista_apartamentos):
         print("Apartamento não encontrado.")
 
 
-def imprimir_apartamento(lista_apartamentos, i):
+def imprimir_um_apartamento(lista_apartamentos, i):
     print(f"---------------APARTAMENTO #{lista_apartamentos[i][0]}---------------")
     print(f"Descrição: {lista_apartamentos[i][1]}")
     print(f"Número de adultos: {lista_apartamentos[i][2]}")
@@ -596,24 +596,50 @@ def submenu_reserva_apartamentos(lista_reservas_apartamentos, lista_reservas, li
         print()
 
         if opcao == 1:
-            listar_todas_reservas_apartamentos()
+            listar_todas_reservas_apartamentos(lista_reservas_apartamentos)
         elif opcao == 2:
-            listar_uma_reserva_apartamento()
+            listar_uma_reserva_apartamento(lista_reservas_apartamentos)
         elif opcao == 3:
             incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lista_apartamentos)
         elif opcao == 4:
-            excluir_reserva_apartamento()
+            excluir_reserva_apartamento(lista_reservas_apartamentos)
         elif opcao == 5:
             atualizar_dados_arquivos(lista_reservas_apartamentos, "ReservaApartamentos.txt")
             print("Voltando...")
         else:
             opcao_invalida()
 
-def listar_todas_reservas_apartamentos():
-    print()
+def listar_todas_reservas_apartamentos(lista_reservas_apartamentos):
+    print("----------------------------------")
+    for reserva_apt in lista_reservas_apartamentos:
+        print(f"Código da reserva: {reserva_apt[0]}")
+        print(f"Código do apartamento: {reserva_apt[1]}")
+        print(f"Data de ENTRADA: {reserva_apt[2]}")
+        print(f"Data de SAÍDA: {reserva_apt[3]}")
+        print("----------------------------------")
 
-def listar_uma_reserva_apartamento():
-    print()
+def listar_uma_reserva_apartamento(lista_reservas_apartamentos):
+    atr = input("Digite R para buscar por código de reserva e A para buscar por código de apartamento: ").upper()
+    if atr == "R":
+        cod_res = input("Digite o código da reserva do apartamento: ")
+        print()
+        for i in range (len(lista_reservas_apartamentos)):
+            if cod_res == lista_reservas_apartamentos[i][0]:
+                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
+                return
+        print("Código não encontrado, tente novamente com um valor cadastrado.")
+
+    elif atr == "A":
+        cod_apt = input("Digite o código do apartamento da reserva: ")
+        print()
+        for i in range (len(lista_reservas_apartamentos)):
+            if cod_apt == lista_reservas_apartamentos[i][1]:
+                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
+                return
+        print("Código não encontrado, tente novamente com um valor cadastrado.")
+
+    else:
+        opcao_invalida()
 
 def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lista_apartamentos):
     reserva_apartamento = []
@@ -658,40 +684,92 @@ def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lis
     if data_entrada != 0:
         reserva_apartamento.append(data_entrada)
 
-    print()
+        print()
 
-    data_saida = inserir_data("saída")
-    if data_saida != 0:
-        reserva_apartamento.append(data_saida)
+        data_saida = inserir_data("saída")
+        if data_saida != 0:
+            reserva_apartamento.append(data_saida)
 
-    lista_reservas_apartamentos.append(reserva_apartamento)
+            lista_reservas_apartamentos.append(reserva_apartamento)
     
 
-def excluir_reserva_apartamento():
-    print()
+def excluir_reserva_apartamento(lista_reservas_apartamentos):
+    atr = input("Digite R para buscar por código de reserva e A para buscar por código de apartamento: ").upper()
 
+    if atr == "R":
+        cod_res = input("Digite o código da reserva do apartamento: ")
+        achou = False
+        print()
+        for i in range (len(lista_reservas_apartamentos)):
+            if cod_res == lista_reservas_apartamentos[i][0]:
+                achou = True
+                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
+                while achou == True:
+                    confirm = input("Deseja excluir esta reserva de apartamento? (S/N): ").upper()
+                    if confirm == "S":
+                        del lista_reservas_apartamentos[i]
+                        print("Reserva de Apartamento excluída com sucesso.")
+                        return
+                    elif confirm == "N":
+                        print("Voltando...")
+                        return
+                    else:
+                        opcao_invalida()
+        print("Código não encontrado, tente novamente com um valor cadastrado.")
+
+    elif atr == "A":
+        cod_apt = input("Digite o código do apartamento da reserva: ")
+        achou = False
+        print()
+        for i in range (len(lista_reservas_apartamentos)):
+            if cod_apt == lista_reservas_apartamentos[i][1]:
+                achou = True
+                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
+                while achou == True:
+                    confirm = input("Deseja excluir esta reserva de apartamento? (S/N): ").upper()
+                    if confirm == "S":
+                        del lista_reservas_apartamentos[i]
+                        print("Reserva de Apartamento excluída com sucesso.")
+                        return
+                    elif confirm == "N":
+                        print("Voltando...")
+                        return
+                    else:
+                        opcao_invalida()
+        print("Código não encontrado, tente novamente com um valor cadastrado.")
+
+    else:
+        opcao_invalida()
 
 def inserir_data(ent_sai):
     data = ""
-    ano = input(f"Insira o ano da {ent_sai}: ")
-    if len(ano) != 4 or not ano.isdigit():
+    dia = input(f"Insira o dia da {ent_sai}: ")
+    if len(dia) != 2 or not dia.isdigit():
         print("\n Insira um ano com 4 dígitos.")
         return 0
     mes = input(f"Insira o mês da {ent_sai}: ")
     if len(mes) != 2 or not mes.isdigit():
         print("\n Insira um mês com 2 dígitos.")
         return 0
-    dia = input(f"Insira o dia da {ent_sai}: ")
-    if len(dia) != 2 or not dia.isdigit():
+    ano = input(f"Insira o ano da {ent_sai}: ")
+    if len(ano) != 4 or not ano.isdigit():
         print("\n Insira um dia com 2 dígitos.")
         return 0
     data += dia + "/" + mes + "/" + ano
     return data
 
+def imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i):
+    print("----------------------------------")
+    print(f"Código da reserva: {lista_reservas_apartamentos[i][0]}")
+    print(f"Código do apartamento: {lista_reservas_apartamentos[i][1]}")
+    print(f"Data de ENTRADA: {lista_reservas_apartamentos[i][2]}")
+    print(f"Data de SAÍDA: {lista_reservas_apartamentos[i][3]}")
+    print("----------------------------------")
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É TUDO RELATÓRIOS
 #--------------------------------------------------------
+
 def submenu_relatorios(lista_reservas):
     opcao = 0
     while opcao != 4:

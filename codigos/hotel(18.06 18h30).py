@@ -674,13 +674,13 @@ def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lis
     if data_entrada != 0:
         reserva_apartamento.append(data_entrada)
 
-        print()
+    print()
 
-        data_saida = inserir_data("saída")
-        if data_saida != 0:
-            reserva_apartamento.append(data_saida)
+    data_saida = inserir_data("saída")
+    if data_saida != 0:
+        reserva_apartamento.append(data_saida)
 
-            lista_reservas_apartamentos.append(reserva_apartamento)
+    lista_reservas_apartamentos.append(reserva_apartamento)
     
 
 def excluir_reserva_apartamento():
@@ -690,15 +690,15 @@ def excluir_reserva_apartamento():
 def inserir_data(ent_sai):
     data = ""
     ano = input(f"Insira o ano da {ent_sai}: ")
-    if len(ano) < 4 or len(ano) > 4:
+    if len(ano) != 4 or not ano.isdigit():
         print("\n Insira um ano com 4 dígitos.")
         return 0
     mes = input(f"Insira o mês da {ent_sai}: ")
-    if len(mes) < 2 or len(mes) > 2:
+    if len(mes) != 2 or not mes.isdigit():
         print("\n Insira um mês com 2 dígitos.")
         return 0
     dia = input(f"Insira o dia da {ent_sai}: ")
-    if len(dia) < 2 or len(dia) > 2:
+    if len(dia) != 2 or not dia.isdigit():
         print("\n Insira um dia com 2 dígitos.")
         return 0
     data += dia + "/" + mes + "/" + ano

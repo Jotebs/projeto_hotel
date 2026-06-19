@@ -8,11 +8,7 @@ def existe_arquivo(nome):
 
 def listar_dados_arquivos(lista, arq):
     if existe_arquivo(arq):
-<<<<<<< Updated upstream:codigos/hotel(18.06 18h30).py
-        arquivo = open(arq, 'r', encoding="utf-8", errors='ignore')
-=======
-        arquivo = open(arq, 'r')
->>>>>>> Stashed changes:codigos/hotel(15.06 23h00).py
+        arquivo = open(arq, 'r', encoding="utf-8")
         for linha in arquivo:
             linha = linha[:(len(linha)-2)]
             linha = linha.split(";")
@@ -28,7 +24,6 @@ def atualizar_dados_arquivos(lista, arq):
         arquivo.write("\n")
     arquivo.close
 
-<<<<<<< Updated upstream:codigos/hotel(18.06 18h30).py
 def atualizar_arquivos_relatorios(lista, arquivo):
     arq = open(arquivo, "w", encoding="utf-8")
     arq.write(f"---Cliente: {lista[0][1]}----\n")
@@ -37,17 +32,6 @@ def atualizar_arquivos_relatorios(lista, arquivo):
         arq.write(f"Código da Reserva: {lista[i][0]}")
         arq.write("\n")
     arq.close
-=======
-def atualizar_arquivos_relatorios(lista, arq):
-    if existe_arquivo(arq):
-        arquivo = open(arq, "w")
-        arq.write(f"----Cliente: {lista[0][1]}----")
-        arq.write(f"RESERVAS:")
-        for reserva in lista:
-            arq.write(f"Reserva nº {lista[reserva][0]}")
-            arquivo.write("\n")
-        arquivo.close
->>>>>>> Stashed changes:codigos/hotel(15.06 23h00).py
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES

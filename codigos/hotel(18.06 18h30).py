@@ -33,6 +33,7 @@ def atualizar_arquivos_relatorios_cliente(lista, arquivo):
         for i in range(len(lista)):
             arq.write(f"Código da Reserva: {lista[i][0]}")
             arq.write("\n")
+        arq.write('\n')
         arq.close
     else:
         arq = open(arquivo, "w", encoding="utf-8")
@@ -41,6 +42,7 @@ def atualizar_arquivos_relatorios_cliente(lista, arquivo):
         for i in range(len(lista)):
             arq.write(f"Código da Reserva: {lista[i][0]}")
             arq.write("\n")
+        arq.write('\n')
         arq.close
 
 
@@ -52,6 +54,7 @@ def atualizar_arquivos_relatório(lista, arq):
                 arquivo.write(atributo)
                 arquivo.write(";")
             arquivo.write("\n")
+        arquivo.write('\n')
         arquivo.close
     else:
         arquivo = open(arq, "w", encoding="utf-8")
@@ -60,6 +63,7 @@ def atualizar_arquivos_relatório(lista, arq):
                 arquivo.write(atributo)
                 arquivo.write(";")
             arquivo.write("\n")
+        arquivo.write('\n')
         arquivo.close
 
 #--------------------------------------------------------
@@ -853,6 +857,7 @@ def lista_rel_cliente(lista_reservas):
     for i in range(len(lista_reservas)):
         if lista_reservas[i][1] == cpf:
             lista_rel_cliente.append(lista_reservas[i])
+            imprimir_uma_reserva(lista_reservas, i)
     if len(lista_rel_cliente) == 0:
         return 0
     else:

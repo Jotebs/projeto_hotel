@@ -2,7 +2,7 @@
 #DAQUI PRA BAIXO SÃO FUNÇÕES GERAIS
 #--------------------------------------------------------
 
-def procurar(lista, código_chave, indice_na_lista):
+'''def procurar(lista, código_chave, indice_na_lista):
     achou = False
     for i in range(len(lista)):
         if busca == lista[i][0]:
@@ -40,4 +40,4 @@ else:
                 if cod_apto == lista_reservas_apartamentos[i][1]:
                     print()
                     print("Esse código já está cadastrado em uma reserva de apartamento, tente novamente com outro")
-                    return
+                    return'''

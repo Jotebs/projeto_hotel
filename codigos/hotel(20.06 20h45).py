@@ -825,7 +825,8 @@ def submenu_relatorios():
             atualizar_arquivos_relatorios_cliente(lista_rel_cliente(reservas), "Relatorio_Cliente.txt")
             print("Relatório gerado com sucesso.\n")
         elif opcao == 3:
-            incluir_reserva_apartamento()
+            rel_cliente_periodo(reservas_apartamentos, reservas, clientes)
+            print("Relatório gerado com sucesso.\n")
         elif opcao == 4:
             print("Voltando...")
         else:
@@ -864,9 +865,46 @@ def lista_rel_cliente(lista_reservas):
         return lista_rel_cliente
 
 
-def rel_cliente_periodo():
-    if 0 == 1:
-        return 1
+def rel_cliente_periodo(reservas_apartamentos, lista_reservas, lista_clientes):
+    codigos_encontrados = []
+    cpfs = []
+    saida = []
+
+    listadata = input("Digite a data que deseja iniciar a busca (DD/MM/AAAA): ").split("/")
+    data_inicio_busca = "" + listadata[2] + listadata[1] + listadata[0]
+    data_inicio_busca = int(data_inicio_busca)
+
+    listadata = input("Digite a data que deseja encerrar a busca (DD/MM/AAAA): ").split("/")
+    data_fim_busca = "" + listadata[2] + listadata[1] + listadata[0]
+    data_fim_busca = int(data_fim_busca)
+
+    for i in range (len(reservas_apartamentos)):
+        conversao = reservas_apartamentos[i][2].split("/")
+        datainicio = ""
+        datainicio += conversao[2] + conversao[1] + conversao[0]
+        datainicio = int(datainicio)
+
+        conversao = reservas_apartamentos[i][3].split("/")
+        datafim = ""
+        datafim += conversao[2] + conversao[1] + conversao[0]
+        datafim = int(datafim)
+
+        if data_inicio_busca <= datainicio and data_fim_busca >= datafim:
+            codigos_encontrados.append(reservas_apartamentos[i][0])
+
+    for i in range(len(codigos_encontrados)):
+        for j in range(len(lista_reservas)):
+            if codigos_encontrados[i] == lista_reservas[j][0]:
+                if lista_reservas[j][1] not in cpfs:
+                    cpfs.append(lista_reservas[j][1])
+
+    for i in range(len(cpfs)):
+        for j in range(len(lista_clientes)):
+            if cpfs[i] == lista_clientes[j][1]:
+                saida.append([lista_clientes[j][0], lista_clientes[j][1]])
+    
+    return saida
+    
 
 
 #----------------------------------------------------------------------------
@@ -878,7 +916,6 @@ def opcao_invalida():
     print("-------------------------")
     print("Digite uma opção válida.")
     print("-------------------------")
-    
     
 
 def menu():

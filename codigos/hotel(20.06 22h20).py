@@ -56,15 +56,20 @@ def atualizar_arquivos_relatório(lista, arq):
             arquivo.write("\n")
         arquivo.write('\n')
         arquivo.close
+        print("Relatório gerado com sucesso.\n")
     else:
-        arquivo = open(arq, "w", encoding="utf-8")
-        for item in lista:
-            for atributo in item:
-                arquivo.write(atributo)
-                arquivo.write(";")
-            arquivo.write("\n")
-        arquivo.write('\n')
-        arquivo.close
+        if lista != 0:
+            arquivo = open(arq, "w", encoding="utf-8")
+            for item in lista:
+                for atributo in item:
+                    arquivo.write(atributo)
+                    arquivo.write(";")
+                arquivo.write("\n")
+            arquivo.write('\n')
+            arquivo.close
+            print("Relatório gerado com sucesso.\n")
+        else:
+            return
 
 #--------------------------------------------------------
 #DAQUI PRA BAIXO É A ÁREA DE CLIENTES
@@ -321,6 +326,13 @@ def imprimir_uma_reserva(lista_reservas, indice):
     print(f"CPF: {lista_reservas[indice][1]}")
     print("------------------------------------------")
 
+def imprimir_um_periodo(saida):
+    print("------------------------------------------")
+    print(f"Período: {saida[0][0]}/{saida[0][1]}/{saida[0][2]} a {saida[1][0]}/{saida[1][1]}/{saida[1][2]}\n" )
+    for i in range(2, len(saida)):
+        print(f"Cliente: {saida[i][0]} -- {saida[i][1]}")
+    print("------------------------------------------\n")
+
 
 
 def listar_uma_reserva(lista_reservas):
@@ -384,30 +396,37 @@ def excluir_reserva(lista_reservas):
                 print("Voltando...")
 
 def alterar_reserva(lista_reservas, lista_clientes):
-    busca = input("Digite o código da reserva para a busca: ").replace(" ", "")
-    achou = False
-    for i in range(len(lista_reservas)):
-        if busca == lista_reservas[i][0]:
-            achou = True
-            index_busca = i
-    if not achou:
-        print("Não existe uma reserva com esse código cadastrada.")
+    if len(lista_reservas) == 0:
+        print()
+        print("A lista de reservas está vazia.")
+        print()
     else:
-        imprimir_uma_reserva(lista_reservas, index_busca)
-        confirmar = input("Deseja alterar o CPF desta reserva?(S/N): ").upper()
-        if confirmar == "S":
-            achou = False
-            novocpf = input("Digite o novo CPF:")
-            for j in range(len(lista_clientes)):
-                if novocpf == lista_clientes[j][1]:
-                    achou = True
-                    lista_reservas[i][1] = novocpf
-            print("CPF alterado com sucesso!")
-            if not achou:
-                print("Não existe um cliente com este CPF.")
-                return
+        busca = input("Digite o código da reserva para a busca: ").replace(" ", "")
+        achou = False
+        for i in range(len(lista_reservas)):
+            if busca == lista_reservas[i][0]:
+                achou = True
+                index_busca = i
+        if not achou:
+            print("Não existe uma reserva com esse código cadastrada.")
         else:
-            print("Voltando...")
+            imprimir_uma_reserva(lista_reservas, index_busca)
+            confirmar = input("Deseja alterar o CPF desta reserva?(S/N): ").upper()
+            if confirmar == "S":
+                achou = False
+                novocpf = input("Digite o novo CPF:")
+                for j in range(len(lista_clientes)):
+                    if novocpf == lista_clientes[j][1]:
+                        achou = True
+                        lista_reservas[i][1] = novocpf
+                
+                if not achou:
+                    print("Não existe um cliente com este CPF.")
+                else:
+                    print()
+                    print("CPF alterado com sucesso!")
+            else:
+                print("Voltando...")
 
 
 
@@ -490,15 +509,16 @@ def listar_um_apartamento(lista_apartamentos):
         print()
         print("A lista de apartamentos está vazia.")
         print()
-    achou = False
-    cod_buscar = input("Digite o código do apartamento que busca: ")
-    for i in range (len(lista_apartamentos)):
-        if cod_buscar == lista_apartamentos[i][0]:
-            imprimir_um_apartamento(lista_apartamentos, i)
-            achou = True
-    if not achou:
-        print()
-        print("Apartamento não encontrado, tente novamente com um código existente!")
+    else:
+        achou = False
+        cod_buscar = input("Digite o código do apartamento que busca: ")
+        for i in range (len(lista_apartamentos)):
+            if cod_buscar == lista_apartamentos[i][0]:
+                imprimir_um_apartamento(lista_apartamentos, i)
+                achou = True
+        if not achou:
+            print()
+            print("Apartamento não encontrado, tente novamente com um código existente!")
 
 def incluir_apartamento(lista_apartamentos):
     apartamento = []
@@ -644,17 +664,25 @@ def submenu_reserva_apartamentos(lista_reservas_apartamentos, lista_reservas, li
             opcao_invalida()
 
 def listar_todas_reservas_apartamentos(lista_reservas_apartamentos):
-    print("----------------------------------")
-    for reserva_apt in lista_reservas_apartamentos:
-        print(f"Código da reserva: {reserva_apt[0]}")
-        print(f"Código do apartamento: {reserva_apt[1]}")
-        print(f"Data de ENTRADA: {reserva_apt[2]}")
-        print(f"Data de SAÍDA: {reserva_apt[3]}")
-        print("----------------------------------")
+    if len(lista_reservas_apartamentos) == 0:
+        print()
+        print("A lista de reservas de apartamento está vazia.")
+        print()
+    else:
+        for reserva_apt in lista_reservas_apartamentos:
+            print("----------------------------------")
+            print(f"Código da reserva: {reserva_apt[0]}")
+            print(f"Código do apartamento: {reserva_apt[1]}")
+            print(f"Data de ENTRADA: {reserva_apt[2]}")
+            print(f"Data de SAÍDA: {reserva_apt[3]}")
+            print("----------------------------------")
 
 def listar_uma_reserva_apartamento(lista_reservas_apartamentos):
-    atr = input("Digite R para buscar por código de reserva e A para buscar por código de apartamento: ").upper()
-    if atr == "R":
+    if len(lista_reservas_apartamentos) == 0:
+        print()
+        print("A lista de reservas de apartamento está vazia.")
+        print()
+    else:
         cod_res = input("Digite o código da reserva do apartamento: ")
         print()
         for i in range (len(lista_reservas_apartamentos)):
@@ -662,18 +690,6 @@ def listar_uma_reserva_apartamento(lista_reservas_apartamentos):
                 imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
                 return
         print("Código não encontrado, tente novamente com um valor cadastrado.")
-
-    elif atr == "A":
-        cod_apt = input("Digite o código do apartamento da reserva: ")
-        print()
-        for i in range (len(lista_reservas_apartamentos)):
-            if cod_apt == lista_reservas_apartamentos[i][1]:
-                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
-                return
-        print("Código não encontrado, tente novamente com um valor cadastrado.")
-
-    else:
-        opcao_invalida()
 
 def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lista_apartamentos):
     reserva_apartamento = []
@@ -720,12 +736,16 @@ def incluir_reserva_apartamento(lista_reservas_apartamentos, lista_reservas, lis
             reserva_apartamento.append(data_saida)
 
             lista_reservas_apartamentos.append(reserva_apartamento)
+            print()
+            print("Reserva de Apartamento cadastrada com sucesso.")
     
 
 def excluir_reserva_apartamento(lista_reservas_apartamentos):
-    atr = input("Digite R para buscar por código de reserva e A para buscar por código de apartamento: ").upper()
-
-    if atr == "R":
+    if len(lista_reservas_apartamentos) == 0:
+        print()
+        print("A lista de reservas de apartamento está vazia.")
+        print()
+    else:
         cod_res = input("Digite o código da reserva do apartamento: ")
         achou = False
         print()
@@ -737,7 +757,7 @@ def excluir_reserva_apartamento(lista_reservas_apartamentos):
                     confirm = input("Deseja excluir esta reserva de apartamento? (S/N): ").upper()
                     if confirm == "S":
                         del lista_reservas_apartamentos[i]
-                        print("Reserva de Apartamento excluída com sucesso.")
+                        print("\nReserva de Apartamento excluída com sucesso.")
                         return
                     elif confirm == "N":
                         print("Voltando...")
@@ -745,30 +765,6 @@ def excluir_reserva_apartamento(lista_reservas_apartamentos):
                     else:
                         opcao_invalida()
         print("Código não encontrado, tente novamente com um valor cadastrado.")
-
-    elif atr == "A":
-        cod_apt = input("Digite o código do apartamento da reserva: ")
-        achou = False
-        print()
-        for i in range (len(lista_reservas_apartamentos)):
-            if cod_apt == lista_reservas_apartamentos[i][1]:
-                achou = True
-                imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
-                while achou == True:
-                    confirm = input("Deseja excluir esta reserva de apartamento? (S/N): ").upper()
-                    if confirm == "S":
-                        del lista_reservas_apartamentos[i]
-                        print("Reserva de Apartamento excluída com sucesso.")
-                        return
-                    elif confirm == "N":
-                        print("Voltando...")
-                        return
-                    else:
-                        opcao_invalida()
-        print("Código não encontrado, tente novamente com um valor cadastrado.")
-
-    else:
-        opcao_invalida()
 
 def inserir_data(ent_sai):
     data = ""
@@ -810,7 +806,7 @@ def submenu_relatorios():
 
     while opcao != 4:
         print()
-        print("----------RELATÓRIOS----------")
+        print("---------------RELATÓRIOS---------------")
         print("1. Todas as reservas de determinado apartamento")
         print("2. Todas as reservas de determinado cliente")
         print("3. CPF e nome dos clientes que fizeram reservas para determinado período")
@@ -820,13 +816,10 @@ def submenu_relatorios():
 
         if opcao == 1:        
             atualizar_arquivos_relatório(listar_todas_reservas_de_um_apartamento(reservas_apartamentos), "Relatório_Reserva_Apartamento.txt")
-            print("Relatório gerado com sucesso.\n")
         elif opcao == 2:
             atualizar_arquivos_relatorios_cliente(lista_rel_cliente(reservas), "Relatorio_Cliente.txt")
-            print("Relatório gerado com sucesso.\n")
         elif opcao == 3:
             atualizar_arquivos_relatório(rel_cliente_periodo(reservas_apartamentos, reservas, clientes), "Relatório_Reservas_por_Datas.txt")
-            print("Relatório gerado com sucesso.\n")
         elif opcao == 4:
             print("Voltando...")
         else:
@@ -838,7 +831,7 @@ def listar_todas_reservas_de_um_apartamento(lista_reservas_apartamentos):
     print()
     achou = False
     lista_relatorio_reserva_apartamanto = []
-    for i in range (len(lista_reservas_apartamentos)):
+    for i in range (len(lista_reservas_apartamentos)-1):
         if apr == lista_reservas_apartamentos[i][1]:
             imprimir_uma_reserva_apartamento(lista_reservas_apartamentos, i)
             achou = True
@@ -849,7 +842,7 @@ def listar_todas_reservas_de_um_apartamento(lista_reservas_apartamentos):
     
     else:
         print("Código não encontrado, tente novamente com um valor cadastrado.")
-        return
+        return 0
 
 
 def lista_rel_cliente(lista_reservas):
@@ -881,7 +874,7 @@ def rel_cliente_periodo(reservas_apartamentos, lista_reservas, lista_clientes):
     data_fim_busca = int(data_fim_busca)
     saida.append(listadata)
 
-    for i in range (len(reservas_apartamentos)):
+    for i in range (len(reservas_apartamentos)-1):
         conversao = reservas_apartamentos[i][2].split("/")
         datainicio = ""
         datainicio += conversao[2] + conversao[1] + conversao[0]
@@ -906,9 +899,9 @@ def rel_cliente_periodo(reservas_apartamentos, lista_reservas, lista_clientes):
             if cpfs[i] == lista_clientes[j][1]:
                 saida.append([lista_clientes[j][0], lista_clientes[j][1]])
     
+    imprimir_um_periodo(saida)
     return saida
     
-
 
 #----------------------------------------------------------------------------
 #DAQUI PRA BAIXO SÃO FUNÇÕES GERAIS

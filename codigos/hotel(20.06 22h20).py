@@ -825,7 +825,7 @@ def submenu_relatorios():
             atualizar_arquivos_relatorios_cliente(lista_rel_cliente(reservas), "Relatorio_Cliente.txt")
             print("Relatório gerado com sucesso.\n")
         elif opcao == 3:
-            rel_cliente_periodo(reservas_apartamentos, reservas, clientes)
+            atualizar_arquivos_relatório(rel_cliente_periodo(reservas_apartamentos, reservas, clientes), "Relatório_Reservas_por_Datas.txt")
             print("Relatório gerado com sucesso.\n")
         elif opcao == 4:
             print("Voltando...")
@@ -859,6 +859,7 @@ def lista_rel_cliente(lista_reservas):
         if lista_reservas[i][1] == cpf:
             lista_rel_cliente.append(lista_reservas[i])
             imprimir_uma_reserva(lista_reservas, i)
+
     if len(lista_rel_cliente) == 0:
         return 0
     else:
@@ -873,10 +874,12 @@ def rel_cliente_periodo(reservas_apartamentos, lista_reservas, lista_clientes):
     listadata = input("Digite a data que deseja iniciar a busca (DD/MM/AAAA): ").split("/")
     data_inicio_busca = "" + listadata[2] + listadata[1] + listadata[0]
     data_inicio_busca = int(data_inicio_busca)
+    saida.append(listadata)
 
     listadata = input("Digite a data que deseja encerrar a busca (DD/MM/AAAA): ").split("/")
-    data_fim_busca = "" + listadata[2] + listadata[1] + listadata[0]
+    data_fim_busca = "" + listadata[2] + listadata[1] + listadata[0] 
     data_fim_busca = int(data_fim_busca)
+    saida.append(listadata)
 
     for i in range (len(reservas_apartamentos)):
         conversao = reservas_apartamentos[i][2].split("/")

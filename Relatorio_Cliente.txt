@@ -15,3 +15,12 @@ Código da Reserva: 4
 Código da Reserva: 5
 Código da Reserva: 6
 
+---Cliente: 45687002804----
+RESERVAS
+Código da Reserva: 1
+Código da Reserva: 2
+Código da Reserva: 3
+Código da Reserva: 4
+Código da Reserva: 5
+Código da Reserva: 6
+

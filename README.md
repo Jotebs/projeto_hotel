@@ -9,7 +9,6 @@ O sistema foi desenvolvido em Python com o objetivo de simular o gerenciamento d
 
 
 👤 Cadastro de clientes
-
 🛏️ Cadastro de apartamentos
 
 📅 Gerenciamento de reservas

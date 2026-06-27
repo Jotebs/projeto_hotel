@@ -5,10 +5,13 @@ Projeto desenvolvido para a disciplina de Algoritmos e Programação I (APR1) do
 
 O sistema foi desenvolvido em Python com o objetivo de simular o gerenciamento de um hotel, permitindo o controle de clientes, apartamentos e reservas através de um menu interativo no terminal.
 
+
 📌 Funcionalidades
 
 
+
 👤 Cadastro de clientes
+
 🛏️ Cadastro de apartamentos
 
 📅 Gerenciamento de reservas
@@ -25,6 +28,7 @@ O sistema foi desenvolvido em Python com o objetivo de simular o gerenciamento d
 
 
 🛠️ Tecnologias Utilizadas
+
 
 
 Python 3
@@ -45,7 +49,9 @@ Estruturas de Repetição
 
 
 
+
 📁 Estrutura do Projeto
+
 
 
 projeto_hotel/

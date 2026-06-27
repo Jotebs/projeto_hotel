@@ -67,8 +67,11 @@ Além da parte técnica, o projeto também contribuiu para o desenvolvimento de 
 
 👨‍💻 Desenvolvedores
 João Vitor Garcia
+
 Fernando Magri
+
 Cauan Moura
+
 
 
 📜 Licença
